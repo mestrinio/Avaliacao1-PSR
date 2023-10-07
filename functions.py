@@ -31,14 +31,27 @@ def generate_random_letter():
         print("You typed: ", Fore.RED + INPUT + Fore.RESET)
     return True
 
-def generate_random_words(words_from_file):
-    word2write= random.choice(words)
-    print("You should type the word: ", word2write)
+def generate_random_words(words_from_file, mode_word_generator):
 
-    INPUT = input("Type the word: ")
+    if mode_word_generator == '1':
+        word2write= random.choice(words_from_file)
+    else:
+        word2write= chr(random.randint(97, 122))
+        for c in range(2,random.randint(2,10)):
+            word2write = word2write + chr(random.randint(97, 122))
+
+    print("You should type the word: ", word2write)
+    print(word2write + " " + str(len(word2write)))
+    INPUT = readchar.readkey()
+
     if INPUT == ' ':
         return False
-    elif INPUT == word2write:
+    
+    for i in range(1, len(word2write)):
+        INPUT = INPUT + readchar.readkey()
+
+  
+    if INPUT == word2write:
             #addDictionary(INPUT)
         print("You typed: " + Fore.GREEN + INPUT + Fore.RESET)
     else:
