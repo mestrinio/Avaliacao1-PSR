@@ -5,15 +5,23 @@ from collections import namedtuple
 
 #function for time mode
 def time_mode(max_time, word_size):
+
     initial_time = time()
     elapsed_time= 0
     exit = False
     inputs_list = []
+
     while(elapsed_time <= max_time and exit==False):
+        
         if word_size == 1:
             exit, input_data =generate_random_letter()
+        elif word_size == 0:
+            words = []
+            read_file(words)
+            exit, input_data =generate_random_words_from_file(words)
         else:
             exit, input_data =generate_random_word(word_size)
+        
         if exit == False:
             inputs_list.append(input_data)
         
@@ -26,36 +34,33 @@ def time_mode(max_time, word_size):
 
 
 #function for maximum inputs mode
+def inputs_mode(max_inputs,word_size):
+    initial_time = time()
+    exit = False
+    inputs_list = []
+    num_inputs = 0 #number of entered inputs
+    initial_time = time()
 
+    while( num_inputs < max_inputs and exit == False):
 
-#function for word generator
-def generate_random_word(maximum_size):
-
-    size = random.randint(2,maximum_size) #word size
-    letters = string.ascii_lowercase #we only use lowercase letters
-    random_word = ''.join(random.choice(letters) for _ in range(size))
-
-    Input = namedtuple('Input',['requested','received','duration'])
-    print("You should type the word: ", random_word)
-
-    print("Type the word: ")
-    INPUT = ''
-    request_time = time()
-    for letter in random_word:
-        char = readchar.readkey()
-        INPUT += char
+        if word_size == 1:
+            exit, input_data =generate_random_letter()
+        elif word_size == 0:
+            words = []
+            read_file(words)
+            exit, input_data =generate_random_words_from_file(words)
+        else:
+            exit, input_data =generate_random_word(word_size)
+        
+        if exit == False:
+            inputs_list.append(input_data)
+        
+        num_inputs+= 1
     
-    input_data = Input(requested=random_word, received=INPUT, duration=(time()-request_time))
-    if INPUT == ' ':
-           print('You exited the test')
-           return True, input_data
-    elif INPUT == random_word:
-       print("You typed: " + Fore.GREEN + INPUT + Fore.RESET)
-    else:
-        print("You typed: ", Fore.RED + INPUT + Fore.RESET)
-    return False, input_data
-
-
+    end_time = time()
+    elapsed_time = end_time - initial_time
+    print('Duration of the test: ' + str(elapsed_time))
+    return inputs_list,elapsed_time,initial_time, end_time
 
 
 
@@ -78,6 +83,78 @@ def generate_random_letter():
     else:
         print("You typed: ", Fore.RED + INPUT + Fore.RESET)
     return False, input_data
+
+#function for word generator
+def generate_random_word(maximum_size):
+
+    size = random.randint(2,maximum_size) #word size
+    letters = string.ascii_lowercase #we only use lowercase letters
+    random_word = ''.join(random.choice(letters) for _ in range(size))
+
+    Input = namedtuple('Input',['requested','received','duration'])
+    print("You should type the word: ", random_word)
+
+    print("Type the word: ")
+    request_time = time()
+    INPUT = readchar.readkey()
+    
+    if INPUT == ' ':
+           print('You exited the test')
+           input_data = Input(requested=random_word, received=INPUT, duration=(time()-request_time))
+           return True, input_data
+    
+    for i in range(1,len(random_word)):
+        char = readchar.readkey()
+        INPUT += char
+
+    input_data = Input(requested=random_word, received=INPUT, duration=(time()-request_time))
+
+    if INPUT == random_word:
+       print("You typed: " + Fore.GREEN + INPUT + Fore.RESET)
+    else:
+        print("You typed: ", Fore.RED + INPUT + Fore.RESET)
+    return False, input_data
+
+#  Create a list from the file words.txt and return it
+def read_file(words):
+    # Read the file
+    file = open("words.txt", "r")
+    for line in file:
+        words.extend(line.split())
+    file.close()
+
+    return words
+
+def generate_random_words_from_file(words_from_file,):
+
+    
+    word2write= random.choice(words_from_file)
+
+    Input = namedtuple('Input',['requested','received','duration'])
+    print("You should type the word: ", word2write)
+
+    print("Type the word: ")
+    request_time = time()
+    INPUT = readchar.readkey()
+
+    if INPUT == ' ':
+           print('You exited the test')
+           input_data = Input(requested=word2write, received=INPUT, duration=(time()-request_time))
+           return True, input_data
+    
+    for i in range(1,len(word2write)):
+        char = readchar.readkey()
+        INPUT += char
+    
+    input_data = Input(requested=word2write, received=INPUT, duration=(time()-request_time))
+
+    if INPUT == word2write:
+       print("You typed: " + Fore.GREEN + INPUT + Fore.RESET)
+    else:
+        print("You typed: ", Fore.RED + INPUT + Fore.RESET)
+    return False, input_data
+
+
 
 
 
