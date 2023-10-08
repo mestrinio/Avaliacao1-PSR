@@ -5,7 +5,7 @@
 # 12/10/2023
 # 1 - Beatriz Marques; 2 - Pedro Martins; 3 - Tiago Pereira
 import argparse, readchar
-from my_functions import time_mode, statistics
+from my_functions import time_mode, inputs_mode, statistics
 from time import time, ctime
 from collections import namedtuple
 from pprint import pprint
@@ -23,14 +23,20 @@ def main():
     inputs_list = []
  
 
-    #verifies id we are in the time mode
-    if args['use_time_mode']:
+    
+    if args['use_time_mode']: #verifies id we are in the time mode
         print('\nYou selected the time mode. Your test will last ' + str(args['max_value']) + ' seconds')
-        #verifies if the user selected the word typing mode
-        if args['use_words']:
+        
+        if args['use_words']: #verifies if the user selected the word typing mode
+            
             print('\nOnce you have chosen the word typing mode, random words will be generated that you will nedd to reproduce until the time runs out')
-            maximum_size = int(input('What is the maximum size/length you would like for the generated words? '))
+            word_type = int(input('\nWould you like the words to be completely random (1) or randomly chosen from a file with multiple words (2)?'))
+            if (word_type == 1):
+                maximum_size = int(input('What is the maximum size/length you would like for the generated words? '))
+            else:
+                maximum_size = 0
         else:
+            
             print('Once you have chosen the letter typing mode, random characters will be generated that you will nedd to reproduce until the time runs out')
             maximum_size = 1
         
@@ -39,6 +45,30 @@ def main():
         readchar.readkey()
 
         inputs_list, test_duration, test_start, test_end=time_mode(args['max_value'], maximum_size)
+    
+    else:
+        print('\nYou selected the inputs mode. To complete the test, you need do insert ' + str(args['max_value']) + 'inputs')
+
+        if args['use_words']: #verifies if the user selected the word typing mode
+            
+            print('\nOnce you have chosen the word typing mode, random words will be generated that you will nedd to reproduce until the time runs out')
+            word_type = int(input('\nWould you like the words to be completely random (1) or randomly chosen from a file with multiple words?'))
+            if (word_type == 1):
+                maximum_size = int(input('What is the maximum size/length you would like for the generated words? '))
+            else:
+                maximum_size = 0
+        else:
+            
+            print('Once you have chosen the letter typing mode, random characters will be generated that you will nedd to reproduce until the time runs out')
+            maximum_size = 1
+        
+        print('\nTo start the test, press any key, and to stop the test before it finishes, press the space key')
+        print('Good luck')
+        readchar.readkey()
+
+        inputs_list, test_duration, test_start, test_end = inputs_mode(args['max_value'], maximum_size)
+    
+
 
 
     
@@ -63,6 +93,19 @@ def main():
     }
 
     pprint(results)
+
+
+
+
+    
+        
+    
+
+
+
+
+if __name__ == '__main__':
+    main()
 
 
 
