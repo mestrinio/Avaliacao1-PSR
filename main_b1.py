@@ -33,8 +33,8 @@ def main():
             word_type = int(input('\nWould you like the words to be: \n1 - Randomly generated \n2 - Randomly chosen from a file with multiple example words?\n'))
             if (word_type == 1):
                 maximum_size = int(input('\nWhat is the maximum size/length you would like for the generated words?\n'))
-                while maximum_size <= 0 :
-                    maximum_size = int(input('Maximum size must be a positive number!\n'))
+                while maximum_size <= 1 :
+                    maximum_size = int(input('Maximum size must be higher than 1!\n'))
             else:
                 maximum_size = 0
         else:
