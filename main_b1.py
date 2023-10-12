@@ -5,7 +5,7 @@
 # 12/10/2023
 # 1 - Beatriz Marques; 2 - Pedro Martins; 3 - Tiago Pereira
 import argparse, readchar
-from my_functions1 import time_mode, inputs_mode, statistics
+from my_functions import time_mode, inputs_mode, statistics
 from time import time, ctime
 from collections import namedtuple
 from pprint import pprint
